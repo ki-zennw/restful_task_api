@@ -13,6 +13,9 @@ export class AppComponent implements OnInit {
   shown_task = [];
   newTask: any;
   updatedTask: any;
+  selectedTask = false;
+  task = {};
+
 
   constructor(private _httpService: HttpService) { }
   ngOnInit() {
@@ -36,6 +39,14 @@ export class AppComponent implements OnInit {
     })
   }
 
+  taskToShow(task): void {
+    this._httpService.showTask(task).subscribe(data => {
+      console.log(data);
+      this.selectedTask = true;
+      this.task = data['task'];
+    })
+  }
+
   // showTaskFromService(id): void {
   //   let observable = this._httpService.showTask(id);
   //   observable.subscribe(data => {
@@ -48,10 +59,10 @@ export class AppComponent implements OnInit {
     id = id.target.id;
     // let observable = this._httpService.showTask(id);
     // observable.subscribe(data => {
-      // console.log("ON CLICK DATA:", data);
-      this.shown_task = task;
-      // console.log("SHOWN TASK:", this.shown_task);
-      // this.showTaskFromService(data)
+    // console.log("ON CLICK DATA:", data);
+    this.shown_task = task;
+    // console.log("SHOWN TASK:", this.shown_task);
+    // this.showTaskFromService(data)
     // })
   }
 

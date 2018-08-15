@@ -8,7 +8,7 @@ export class HttpService {
 
   constructor(private _http: HttpClient) {
   }
-
+  
   getTasks() {
     return this._http.get('/tasks');
   }
@@ -18,10 +18,10 @@ export class HttpService {
     return this._http.post('/new', num);
   }
 
-  // showTask(task) {
-  //   console.log("SHOW TASK:", task);
-  //   return this._http.get('/' + task._id);
-  // }
+  showTask(task) {
+    console.log("SHOW TASK:", task);
+    return this._http.get('/' + task._id);
+  }
 
   post(taskObj) {
     return this._http.post('/new', taskObj);
