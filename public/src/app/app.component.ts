@@ -11,15 +11,18 @@ export class AppComponent implements OnInit {
   tasks = [];
   third_task = [];
   shown_task = [];
+  newTask: any;
+  updatedTask: any;
 
   constructor(private _httpService: HttpService) { }
   ngOnInit() {
-    // this.getTasksFromService()
+    this.newTask = { title: "", description: "" }
   }
+
   getTasksFromService() {
     let observable = this._httpService.getTasks();
     observable.subscribe(data => {
-      console.log("GOT OUR DATA", data);
+      // console.log("GOT OUR DATA", data);
       this.tasks = data['tasks'];
       this.third_task = this.tasks[2];
     })
@@ -33,21 +36,50 @@ export class AppComponent implements OnInit {
     })
   }
 
-  showTaskFromService(id): void {
-    let observable = this._httpService.showTask(id);
-    observable.subscribe(data => {
-      console.log("DATA:", data);
+  // showTaskFromService(id): void {
+  //   let observable = this._httpService.showTask(id);
+  //   observable.subscribe(data => {
+  //     console.log("DATA:", data);
+  //   })
+  // }
+
+  onButtonClickGetUpdate(id, task): void {
+    console.log(task);
+    id = id.target.id;
+    // let observable = this._httpService.showTask(id);
+    // observable.subscribe(data => {
+      // console.log("ON CLICK DATA:", data);
+      this.shown_task = task;
+      // console.log("SHOWN TASK:", this.shown_task);
+      // this.showTaskFromService(data)
+    // })
+  }
+
+  onSubmitCreate() {
+    this._httpService.post(this.newTask).subscribe((responseData) => {
+      console.log(responseData);
+      this.newTask = { title: "", description: "" }
+      this.getTasksFromService();
     })
   }
 
-  onButtonClickGetDescription(id): void {
+  onButtonClickDelete(id): void {
     id = id.target.id;
-    let observable = this._httpService.showTask(id);
-    observable.subscribe(data => {
-      console.log("ON CLICK DATA:", data);
-      this.shown_task = data['task'];
-      console.log("SHOWN TASK:", this.shown_task);
-      this.showTaskFromService(data)
+    this._httpService.deleteTask(id).subscribe((resData) => {
+      console.log("DATA TO DELETE:", resData);
+      // this.deleteTaskFromService(resData);
+      this.getTasksFromService();
+    })
+  }
+
+
+  onSubmitUpdate(id): void {
+    console.log(event);
+    id = id.target.id;
+    console.log("ID TO UPDATE:", id);
+    this._httpService.updateTask(this.shown_task).subscribe((resData) => {
+      console.log("RESDATA TO UPDATE:", resData);
+      this.getTasksFromService();
     })
   }
   // onButtonClick(): void {
@@ -57,12 +89,12 @@ export class AppComponent implements OnInit {
   //   console.log(`Click event is working with num param: ${num}`);
   //   let observable = this._httpService.postToServer({ data: num });
   //   observable.subscribe(data => console.log("got our data w/ click!", data));
-    // }
-    // onButtonClickParams(num: Number, str: String): void {
-    //   console.log(`Click event is working with num param: ${num} and str param: ${str}`);
-    // }
-    // onButtonClickEvent(event: any): void {
-    //   console.log(`Click event is working with event: ${event}`, event)
-    // }
+  // }
+  // onButtonClickParams(num: Number, str: String): void {
+  //   console.log(`Click event is working with num param: ${num} and str param: ${str}`);
+  // }
+  // onButtonClickEvent(event: any): void {
+  //   console.log(`Click event is working with event: ${event}`, event)
+  // }
 
-  }
+}

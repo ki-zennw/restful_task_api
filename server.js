@@ -70,7 +70,7 @@ app.post('/new', function (req, res) {
 
 app.put('/update/:_id', function (req, res) {
     Task.find({ _id: req.params._id }, function (err, task) {
-        console.log(task);
+        console.log("TASK IN SERVER:", task);
         task[0].title = req.body.title;
         task[0].description = req.body.description;
         task[0].completed = req.body.completed;
